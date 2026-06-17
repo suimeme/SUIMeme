@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suiii Meme | $SUIIMeme — Solana's Most Aggressive Meme</title>
+<meta name="description" content="$SUIIMeme — Solana's most aggressive meme. 1B supply, 0% tax, 100% fair launch on Pump.fun. No presale. No dev allocation. Just SUIII.">
+
+<!-- 🔧 EDIT: this uses logo.png as the favicon + social preview image. Make sure logo.png sits next to this file. -->
+<link rel="icon" href="logo.png" type="image/png">
+<meta property="og:title" content="Suiii Meme — $SUIIMeme">
+<meta property="og:description" content="Solana's Most Aggressive Meme. 0% Tax. 100% Fair Launch.">
+<meta property="og:image" content="logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ===================== TOKENS ===================== */
+:root{
+  --bg:#07070b;
+  --bg-alt:#0e0e16;
+  --bg-card:#13131d;
+  --line:rgba(255,255,255,0.08);
+  --gold:#ffc23c;
+  --gold-deep:#ff9d1f;
+  --red:#ff2d55;
+  --red-deep:#c4123f;
+  --white:#f5f5f7;
+  --muted:#9a9aa8;
+  --display: 'Anton', sans-serif;
+  --body: 'Inter', sans-serif;
+  --mono: 'Space Mono', monospace;
+  --nav-h: 76px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--white);
+  font-family:var(--body);
+  line-height:1.6;
+  overflow-x:hidden;
+}
+section, header{scroll-margin-top:var(--nav-h);}
+img{max-width:100%;display:block;}
+a{color:inherit;text-decoration:none;}
+::selection{background:var(--red);color:#fff;}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+.eyebrow{
+  font-family:var(--mono);
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  font-size:.75rem;
+  color:var(--gold);
+}
+.section-head{max-width:640px;margin-bottom:48px;}
+.section-head h2{
+  font-family:var(--display);
+  font-size:clamp(2.1rem,5vw,3.2rem);
+  text-transform:uppercase;
+  letter-spacing:.01em;
+  line-height:1.05;
+  margin-top:10px;
+}
+.section-pad{padding:110px 0;}
+.muted{color:var(--muted);}
+
+/* gradient text */
+.grad-text{
+  background:linear-gradient(95deg,var(--gold) 0%, var(--gold-deep) 35%, var(--red) 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+/* buttons */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-family:var(--body);font-weight:700;font-size:.95rem;
+  padding:16px 30px;border-radius:999px;
+  cursor:pointer;border:none;
+  transition:transform .25s ease, box-shadow .25s ease, opacity .25s ease;
+  white-space:nowrap;
+}
+.btn-primary{
+  background:linear-gradient(95deg,var(--gold),var(--gold-deep));
+  color:#1a0d00;
+  box-shadow:0 0 0 0 rgba(255,194,60,.6), 0 8px 30px -8px rgba(255,157,31,.7);
+}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 14px 34px -10px rgba(255,157,31,.85);}
+.btn-outline{
+  background:transparent;
+  border:1.5px solid rgba(255,255,255,0.25);
+  color:var(--white);
+}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-3px);}
+.btn-sm{padding:10px 20px;font-size:.85rem;}
+
+/* ===================== NAVBAR ===================== */
+#navbar{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  height:var(--nav-h);
+  display:flex;align-items:center;
+  background:rgba(7,7,11,0.55);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid transparent;
+  transition:border-color .3s ease, background .3s ease;
+}
+#navbar.scrolled{background:rgba(7,7,11,0.92);border-bottom-color:var(--line);}
+.nav-inner{
+  width:100%;display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:1.3rem;letter-spacing:.02em;text-transform:uppercase;}
+.nav-logo img{width:36px;height:36px;border-radius:9px;object-fit:cover;}
+.nav-links{display:flex;gap:34px;align-items:center;}
+.nav-links a{font-size:.92rem;font-weight:600;color:var(--muted);transition:color .2s;}
+.nav-links a:hover{color:var(--white);}
+.nav-cta{display:flex;align-items:center;gap:14px;}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:6px;}
+.hamburger span{width:24px;height:2px;background:var(--white);display:block;}
+
+/* ===================== HERO ===================== */
+#hero{
+  position:relative;
+  min-height:100vh;
+  display:flex;align-items:center;
+  padding-top:var(--nav-h);
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 35%, rgba(255,45,85,0.18), transparent 60%),
+    radial-gradient(circle at 50% 35%, rgba(255,194,60,0.10), transparent 70%),
+    var(--bg);
+}
+.rays{
+  position:absolute;top:50%;left:50%;width:1400px;height:1400px;
+  transform:translate(-50%,-50%);
+  background:conic-gradient(from 0deg, rgba(255,194,60,0.08) 0deg, transparent 12deg, transparent 24deg, rgba(255,45,85,0.08) 36deg, transparent 48deg, transparent 60deg, rgba(255,194,60,0.08) 72deg, transparent 84deg, transparent 96deg, rgba(255,45,85,0.08) 108deg, transparent 120deg, transparent 132deg, rgba(255,194,60,0.08) 144deg, transparent 156deg, transparent 168deg, rgba(255,45,85,0.08) 180deg, transparent 192deg, transparent 204deg, rgba(255,194,60,0.08) 216deg, transparent 228deg, transparent 240deg, rgba(255,45,85,0.08) 252deg, transparent 264deg, transparent 276deg, rgba(255,194,60,0.08) 288deg, transparent 300deg, transparent 312deg, rgba(255,45,85,0.08) 324deg, transparent 336deg, transparent 348deg, rgba(255,194,60,0.08) 360deg);
+  animation:spin 50s linear infinite;
+  pointer-events:none;
+}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg);}}
+
+.particle{
+  position:absolute;border-radius:50%;
+  background:var(--gold);opacity:.5;
+  animation:float 9s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes float{
+  0%,100%{transform:translateY(0) translateX(0);}
+  50%{transform:translateY(-40px) translateX(14px);}
+}
+
+.hero-inner{
+  position:relative;z-index:2;width:100%;
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  gap:26px;padding:60px 24px 90px;
+}
+.hero-logo-wrap{position:relative;width:160px;height:160px;}
+.hero-logo-wrap img{
+  width:160px;height:160px;border-radius:32px;object-fit:cover;
+  box-shadow:0 0 0 0 rgba(255,194,60,.55);
+  animation:pulseGlow 2.6s ease-in-out infinite;
+}
+@keyframes pulseGlow{
+  0%{box-shadow:0 0 0 0 rgba(255,194,60,.45);}
+  70%{box-shadow:0 0 0 28px rgba(255,194,60,0);}
+  100%{box-shadow:0 0 0 0 rgba(255,194,60,0);}
+}
+
+.ticker-badge{
+  font-family:var(--mono);font-size:.85rem;letter-spacing:.12em;
+  padding:8px 20px;border-radius:999px;
+  border:1px solid rgba(255,194,60,.4);
+  background:rgba(255,194,60,.08);
+  color:var(--gold);
+}
+
+.hero-headline{
+  font-family:var(--display);
+  font-size:clamp(3.6rem,13vw,8.5rem);
+  line-height:.92;
+  text-transform:uppercase;
+  letter-spacing:.01em;
+}
+.hero-sub{
+  font-size:clamp(1.05rem,2vw,1.4rem);
+  color:var(--muted);
+  max-width:560px;
+  font-weight:500;
+}
+.hero-ctas{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:6px;}
+
+.tagline-rotator{
+  font-family:var(--mono);font-size:.9rem;color:var(--gold);
+  min-height:1.4em;
+}
+
+.stats-bar{
+  display:flex;gap:0;margin-top:30px;
+  border:1px solid var(--line);border-radius:18px;
+  overflow:hidden;background:rgba(255,255,255,0.02);
+}
+.stats-bar .stat{
+  padding:16px 30px;text-align:center;border-right:1px solid var(--line);
+}
+.stats-bar .stat:last-child{border-right:none;}
+.stats-bar .stat .num{font-family:var(--mono);font-weight:700;font-size:1.1rem;color:var(--white);}
+.stats-bar .stat .lab{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:2px;}
+
+/* ===================== REVEAL ANIMATION ===================== */
+.reveal{opacity:0;transform:translateY(46px);transition:opacity .8s cubic-bezier(.2,.7,.3,1), transform .8s cubic-bezier(.2,.7,.3,1);}
+.reveal.visible{opacity:1;transform:none;}
+.stagger > *{opacity:0;transform:translateY(46px);transition:opacity .7s ease, transform .7s ease;}
+.stagger.visible > *{opacity:1;transform:none;}
+.stagger.visible > *:nth-child(1){transition-delay:.05s;}
+.stagger.visible > *:nth-child(2){transition-delay:.15s;}
+.stagger.visible > *:nth-child(3){transition-delay:.25s;}
+.stagger.visible > *:nth-child(4){transition-delay:.35s;}
+
+/* ===================== ABOUT ===================== */
+#about{background:var(--bg);}
+.about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:70px;align-items:center;}
+.about-copy p{margin-bottom:18px;color:#cfcfd6;font-size:1.02rem;}
+.callout{
+  margin-top:26px;padding:22px 26px;border-radius:16px;
+  border:1px solid rgba(255,45,85,.35);
+  background:linear-gradient(135deg, rgba(255,45,85,.08), rgba(255,194,60,.05));
+  font-family:var(--mono);font-size:.92rem;color:var(--gold);
+}
+.about-visual{
+  position:relative;display:flex;align-items:center;justify-content:center;
+  aspect-ratio:1/1;border-radius:28px;
+  background:radial-gradient(circle at 50% 50%, rgba(255,45,85,.18), transparent 70%);
+}
+.about-visual img{
+  width:78%;border-radius:24px;
+  box-shadow:0 30px 80px -30px rgba(255,45,85,.5);
+}
+
+/* ===================== TOKENOMICS — SCOREBOARD ===================== */
+#tokenomics{background:var(--bg-alt);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.scoreboard{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:22px;
+}
+.score-tile{
+  background:var(--bg-card);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:32px 24px;
+  position:relative;overflow:hidden;
+}
+.score-tile::before{
+  content:"";position:absolute;inset:0;border-radius:20px;padding:1px;
+  background:linear-gradient(135deg, var(--gold), transparent 40%, var(--red));
+  -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  opacity:.5;
+}
+.score-tile .tile-label{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+.score-tile .tile-value{
+  font-family:var(--mono);font-weight:700;
+  font-size:clamp(1.8rem,4vw,2.4rem);
+  margin-top:10px;color:var(--white);
+}
+.score-tile .tile-value.gold{color:var(--gold);}
+.score-tile .tile-sub{margin-top:8px;font-size:.85rem;color:var(--muted);}
+.tokenomics-note{margin-top:30px;text-align:center;font-family:var(--mono);font-size:.85rem;color:var(--gold);}
+
+/* ===================== HOW TO BUY ===================== */
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;}
+.step-card{
+  background:var(--bg-card);border:1px solid var(--line);border-radius:20px;
+  padding:30px 22px;transition:transform .3s ease, border-color .3s ease;
+}
+.step-card:hover{transform:translateY(-6px);border-color:rgba(255,194,60,.4);}
+.step-num{
+  font-family:var(--display);font-size:2.2rem;color:var(--gold);
+  -webkit-text-stroke:1px var(--red);
+  opacity:.9;
+}
+.step-icon{margin:14px 0;width:34px;height:34px;color:var(--gold);}
+.step-title{font-weight:700;font-size:1.02rem;margin-bottom:6px;}
+.step-desc{color:var(--muted);font-size:.9rem;}
+
+/* ===================== COMMUNITY ===================== */
+#community{
+  background:linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+  text-align:center;
+}
+.social-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:36px;}
+.social-btn{
+  display:flex;align-items:center;gap:10px;
+  padding:14px 26px;border-radius:999px;
+  border:1px solid var(--line);background:var(--bg-card);
+  font-weight:700;font-size:.92rem;
+  transition:transform .25s ease,border-color .25s ease;
+}
+.social-btn:hover{transform:translateY(-3px);border-color:var(--gold);}
+.social-btn svg{width:20px;height:20px;}
+
+/* ===================== FAQ ===================== */
+.faq-item{border-bottom:1px solid var(--line);}
+.faq-q{
+  width:100%;text-align:left;background:none;border:none;color:var(--white);
+  font-family:var(--body);font-weight:700;font-size:1.05rem;
+  padding:22px 0;display:flex;justify-content:space-between;align-items:center;
+  cursor:pointer;
+}
+.faq-q .plus{font-family:var(--mono);font-size:1.3rem;color:var(--gold);transition:transform .3s ease;}
+.faq-item.open .plus{transform:rotate(45deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease;}
+.faq-a p{padding-bottom:20px;color:var(--muted);font-size:.95rem;max-width:680px;}
+
+/* ===================== CONTACT ===================== */
+#contact{background:var(--bg-alt);border-top:1px solid var(--line);}
+.contact-card{
+  max-width:600px;margin:0 auto;background:var(--bg-card);
+  border:1px solid var(--line);border-radius:22px;padding:40px;
+}
+.field{margin-bottom:20px;}
+.field label{display:block;font-size:.82rem;color:var(--muted);margin-bottom:8px;font-weight:600;}
+.field input, .field textarea{
+  width:100%;background:var(--bg);border:1px solid var(--line);
+  border-radius:12px;padding:14px 16px;color:var(--white);font-family:var(--body);
+  font-size:.95rem;resize:vertical;
+}
+.field input:focus, .field textarea:focus{outline:2px solid var(--gold);border-color:transparent;}
+#formStatus{margin-top:14px;font-size:.88rem;font-family:var(--mono);}
+
+/* ===================== LEGAL ===================== */
+.legal-block{max-width:760px;}
+.legal-block h3{font-size:1.05rem;margin:22px 0 8px;color:var(--gold);}
+.legal-block p, .legal-block li{color:var(--muted);font-size:.93rem;margin-bottom:8px;}
+.legal-block ul{padding-left:20px;}
+
+/* ===================== FOOTER ===================== */
+footer{
+  border-top:1px solid var(--line);padding:40px 0;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
+}
+.footer-logo{display:flex;align-items:center;gap:10px;font-family:var(--display);text-transform:uppercase;}
+.footer-logo img{width:30px;height:30px;border-radius:7px;}
+.footer-links{display:flex;gap:24px;flex-wrap:wrap;}
+.footer-links a{color:var(--muted);font-size:.88rem;}
+.footer-links a:hover{color:var(--gold);}
+.badge-built{
+  font-family:var(--mono);font-size:.75rem;color:var(--muted);
+  border:1px solid var(--line);padding:6px 14px;border-radius:999px;
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width:980px){
+  .about-grid{grid-template-columns:1fr;gap:40px;}
+  .about-visual{order:-1;max-width:340px;margin:0 auto;}
+  .scoreboard{grid-template-columns:1fr 1fr;}
+  .steps-grid{grid-template-columns:1fr 1fr;}
+}
+@media (max-width:760px){
+  .nav-links{
+    position:fixed;top:var(--nav-h);left:0;right:0;
+    background:rgba(7,7,11,0.98);backdrop-filter:blur(14px);
+    flex-direction:column;align-items:flex-start;gap:0;
+    max-height:0;overflow:hidden;transition:max-height .3s ease;
+    border-bottom:1px solid var(--line);
+  }
+  .nav-links.open{max-height:320px;}
+  .nav-links a{width:100%;padding:18px 24px;border-bottom:1px solid var(--line);}
+  .nav-cta .btn-outline{display:none;}
+  .hamburger{display:flex;}
+  .stats-bar{flex-wrap:wrap;}
+  .stats-bar .stat{flex:1 1 50%;border-bottom:1px solid var(--line);}
+  .scoreboard{grid-template-columns:1fr;}
+  .steps-grid{grid-template-columns:1fr;}
+  .section-pad{padding:80px 0;}
+}
+@media (max-width:480px){
+  .hero-headline{font-size:clamp(3.2rem,18vw,4.5rem);}
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== NAVBAR ===================== -->
+<nav id="navbar">
+  <div class="wrap nav-inner">
+    <a href="#hero" class="nav-logo">
+      <!-- 🔧 EDIT: drop logo.png in this folder -->
+      <img src="logo.png" alt="Suiii Meme logo">
+      Suiii Meme
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="#about">About</a>
+      <a href="#tokenomics">Tokenomics</a>
+      <a href="#how-to-buy">How to Buy</a>
+      <a href="#community">Community</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#" class="btn btn-outline btn-sm" target="_blank" rel="noopener">View Chart</a>
+      <!-- 🔧 EDIT: replace # with your pump.fun link -->
+      <a href="#" class="btn btn-primary btn-sm" target="_blank" rel="noopener">Buy $SUIIMeme</a>
+      <button class="hamburger" id="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<header id="hero">
+  <div class="rays"></div>
+  <div id="particles"></div>
+  <div class="hero-inner">
+    <span class="eyebrow">SOLANA · FAIR LAUNCH · 0% TAX</span>
+    <div class="hero-logo-wrap">
+      <img src="logo.png" alt="Suiii Meme logo">
+    </div>
+    <h1 class="hero-headline grad-text">SUIII</h1>
+    <p class="hero-sub">Solana's Most Aggressive Meme Has Arrived. Inspired by the most iconic celebration in football — now taking over the chain.</p>
+    <span class="ticker-badge">$SUIIMeme</span>
+    <div class="hero-ctas">
+      <!-- 🔧 EDIT: replace # with your pump.fun link -->
+      <a href="#" class="btn btn-primary" target="_blank" rel="noopener">⚡ Buy on Pump.fun</a>
+      <a href="#" class="btn btn-outline" target="_blank" rel="noopener">View Chart</a>
+    </div>
+    <p class="tagline-rotator" id="rotator"></p>
+    <div class="stats-bar">
+      <div class="stat"><div class="num">1,000,000,000</div><div class="lab">Supply</div></div>
+      <div class="stat"><div class="num">0% / 0%</div><div class="lab">Buy / Sell Tax</div></div>
+      <div class="stat"><div class="num">Solana</div><div class="lab">Chain</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== ABOUT ===================== -->
+<section id="about" class="section-pad">
+  <div class="wrap about-grid">
+    <div class="about-copy reveal">
+      <span class="eyebrow">The Story</span>
+      <h2 class="section-head" style="margin-bottom:18px;">What is $SUIIMeme?</h2>
+      <p>One celebration. One sound. One sprint to the corner flag, arms out, chest forward — and the whole stadium loses it. That's SUIII. It's not just a goal celebration, it's a statement: confidence, dominance, no hesitation.</p>
+      <p>$SUIIMeme brings that exact energy to Solana. No slow build-up, no committee meetings, no "wait and see." Just a community-launched token that moves like the celebration it's named after — fast, loud, and impossible to ignore.</p>
+      <p>There's no team quietly holding a stash in the background and no presale handed out to insiders before you even heard the name. Everyone enters through the same door, at the same time, on Pump.fun.</p>
+      <div class="callout">⚡ Fair Launch. No Dev Wallet. No BS.</div>
+    </div>
+    <div class="about-visual reveal">
+      <img src="logo.png" alt="Suiii Meme logo">
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TOKENOMICS ===================== -->
+<section id="tokenomics" class="section-pad">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Match Stats</span>
+      <h2>Tokenomics</h2>
+    </div>
+    <div class="scoreboard stagger">
+      <div class="score-tile">
+        <div class="tile-label">Total Supply</div>
+        <div class="tile-value">1,000,000,000</div>
+        <div class="tile-sub">Fixed. No future minting.</div>
+      </div>
+      <div class="score-tile">
+        <div class="tile-label">Buy / Sell Tax</div>
+        <div class="tile-value gold">0% / 0%</div>
+        <div class="tile-sub">What you trade is what you keep.</div>
+      </div>
+      <div class="score-tile">
+        <div class="tile-label">Launch Mechanism</div>
+        <div class="tile-value gold">100% Fair</div>
+        <div class="tile-sub">On Pump.fun. No presale, no team allocation.</div>
+      </div>
+    </div>
+    <p class="tokenomics-note reveal">No pre-sale. No team allocation. Pure community.</p>
+  </div>
+</section>
+
+<!-- ===================== HOW TO BUY ===================== -->
+<section id="how-to-buy" class="section-pad">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Get In</span>
+      <h2>How to Buy $SUIIMeme</h2>
+    </div>
+    <div class="steps-grid stagger">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <svg class="step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v12m0 0l-5-5m5 5l5-5M5 21h14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="step-title">Download Phantom</div>
+        <div class="step-desc">Install the Phantom wallet app or browser extension to hold Solana tokens.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <svg class="step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h2" stroke-linecap="round"/></svg>
+        <div class="step-title">Fund with SOL</div>
+        <div class="step-desc">Buy SOL on an exchange and send it to your new Phantom wallet.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <svg class="step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18 14 14 0 010-18z"/></svg>
+        <div class="step-title">Go to Pump.fun</div>
+        <div class="step-desc">Search for $SUIIMeme on Pump.fun and open the token page.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">04</div>
+        <svg class="step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 7h10l-3-3m3 3l-3 3M17 17H7l3 3m-3-3l3-3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="step-title">Swap for $SUIIMeme</div>
+        <div class="step-desc">Connect your wallet and swap SOL for $SUIIMeme. Welcome in.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== COMMUNITY ===================== -->
+<section id="community" class="section-pad">
+  <div class="wrap reveal">
+    <span class="eyebrow">Join In</span>
+    <h2 class="section-head" style="margin:14px auto 0;">Join the SUIII Army</h2>
+    <p class="muted" style="max-width:520px;margin:0 auto;">Charts, memes, and the next move — it all happens here first.</p>
+    <div class="social-row">
+      <!-- 🔧 EDIT: replace # with your X / Twitter link -->
+      <a href="#" class="social-btn" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.2 8.2L23 22h-6.9l-5.4-7-6.2 7H1.3l7.7-8.8L1 2h7l4.9 6.4L18.9 2z"/></svg>
+        X / Twitter
+      </a>
+      <!-- 🔧 EDIT: replace # with your Telegram link -->
+      <a href="#" class="social-btn" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.5l-3.2 15.2c-.2 1-.9 1.3-1.7.8l-4.7-3.5-2.3 2.2c-.3.3-.5.4-1 .4l.3-4.9 8.9-8c.4-.4-.1-.6-.6-.2l-11 6.9-4.7-1.5c-1-.3-1-1 .2-1.5L20.4 3c.8-.3 1.6.2 1.5 1.5z"/></svg>
+        Telegram
+      </a>
+      <!-- 🔧 EDIT: replace # with your pump.fun link -->
+      <a href="#" class="social-btn" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l9 5v10l-9 5-9-5V7l9-5z"/></svg>
+        Pump.fun
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section id="faq" class="section-pad">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Questions</span>
+      <h2>FAQ</h2>
+    </div>
+    <div class="faq-list reveal" style="max-width:760px;">
+      <div class="faq-item">
+        <button class="faq-q">What is $SUIIMeme? <span class="plus">+</span></button>
+        <div class="faq-a"><p>$SUIIMeme is a community meme token on Solana, inspired by football's most iconic celebration. It has no utility promise beyond being a meme — its value comes entirely from the community around it.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Is there a presale or team allocation? <span class="plus">+</span></button>
+        <div class="faq-a"><p>No. 100% of supply launches fair on Pump.fun. There is no presale and no tokens set aside for a dev team.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Is this affiliated with Cristiano Ronaldo? <span class="plus">+</span></button>
+        <div class="faq-a"><p>No. $SUIIMeme is an independent, fan-made meme project inspired by the celebration. It is not endorsed by, sponsored by, or connected to Cristiano Ronaldo or any club he plays for.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Is buying $SUIIMeme safe / guaranteed to profit? <span class="plus">+</span></button>
+        <div class="faq-a"><p>No token, including this one, can guarantee a profit. Meme coins are highly volatile and speculative. Only ever spend what you're fully prepared to lose, and do your own research.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Where can I buy it? <span class="plus">+</span></button>
+        <div class="faq-a"><p>$SUIIMeme launches on Pump.fun. Use the "Buy on Pump.fun" button at the top of this page once it's live.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section id="contact" class="section-pad">
+  <div class="wrap">
+    <div class="section-head reveal" style="margin:0 auto 40px;text-align:center;">
+      <span class="eyebrow">Get in touch</span>
+      <h2>Contact Us</h2>
+      <p class="muted">Suggestions, questions, partnership ideas — send them our way.</p>
+    </div>
+    <form id="contactForm" class="contact-card reveal">
+      <div class="field">
+        <label for="cName">Name</label>
+        <input id="cName" name="from_name" type="text" required>
+      </div>
+      <div class="field">
+        <label for="cMsg">Message / Suggestion</label>
+        <textarea id="cMsg" name="message" rows="5" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;">Send Message</button>
+      <div id="formStatus"></div>
+    </form>
+  </div>
+</section>
+
+<!-- ===================== PRIVACY ===================== -->
+<section id="privacy" class="section-pad">
+  <div class="wrap legal-block">
+    <span class="eyebrow">Legal</span>
+    <h2 class="section-head" style="margin:14px 0 0;font-size:1.8rem;">Privacy Policy</h2>
+    <p>This site does not use tracking cookies or sell visitor data. The only personal information collected is what you voluntarily submit through the Contact form (name and message), which is sent directly to our team's email for the sole purpose of responding to you.</p>
+    <h3>What we collect</h3>
+    <ul>
+      <li>Name and message text submitted via the contact form.</li>
+      <li>No wallet addresses, private keys, or financial information are ever requested or stored by this site.</li>
+    </ul>
+    <h3>What we don't do</h3>
+    <ul>
+      <li>We never ask for your seed phrase or private keys. Anyone who does, anywhere, is scamming you.</li>
+      <li>We do not share contact form submissions with third parties.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== TERMS ===================== -->
+<section id="terms" class="section-pad">
+  <div class="wrap legal-block">
+    <span class="eyebrow">Legal</span>
+    <h2 class="section-head" style="margin:14px 0 0;font-size:1.8rem;">Terms & Risk Disclosure</h2>
+    <p>$SUIIMeme is a meme token created for entertainment and community purposes. It carries no inherent utility, no profit guarantee, and no promise of future value.</p>
+    <h3>Risk</h3>
+    <ul>
+      <li>Cryptocurrency, and meme tokens in particular, are highly volatile and speculative. Prices can fall to zero.</li>
+      <li>Nothing on this site is financial, investment, or legal advice. Do your own research before buying anything.</li>
+      <li>Only commit funds you can fully afford to lose.</li>
+    </ul>
+    <h3>No affiliation</h3>
+    <p>This project is an independent, fan-made meme and is not affiliated with, endorsed by, or sponsored by Cristiano Ronaldo, Solana Labs, Phantom, or Pump.fun. All names are referenced for descriptive purposes only.</p>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="wrap">
+  <div class="footer-logo">
+    <img src="logo.png" alt="Suiii Meme logo">
+    Suiii Meme
+  </div>
+  <div class="footer-links">
+    <a href="#about">About</a>
+    <a href="#tokenomics">Tokenomics</a>
+    <a href="#faq">FAQ</a>
+    <a href="#privacy">Privacy</a>
+    <a href="#terms">Terms</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <span class="badge-built">Built on Solana</span>
+</footer>
+
+<!-- ===================== EmailJS SDK ===================== -->
+<!-- 🔧 EDIT: create a free account at emailjs.com, then replace the 3 placeholders below -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+/* ---------- Navbar scroll + mobile menu ---------- */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 20);
+});
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+/* ---------- Scroll reveal ---------- */
+const revealEls = document.querySelectorAll('.reveal, .stagger');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+revealEls.forEach(el => io.observe(el));
+
+/* ---------- Hero tagline rotator ---------- */
+const taglines = ["No Tax. No Presale. Just SUIII.", "100% Fair Launch on Pump.fun.", "Solana's Most Aggressive Meme."];
+let tIndex = 0;
+const rotator = document.getElementById('rotator');
+function rotateTagline(){
+  rotator.style.opacity = 0;
+  setTimeout(() => {
+    rotator.textContent = taglines[tIndex];
+    rotator.style.opacity = 1;
+    tIndex = (tIndex + 1) % taglines.length;
+  }, 300);
+}
+rotator.style.transition = 'opacity .3s ease';
+rotateTagline();
+setInterval(rotateTagline, 3200);
+
+/* ---------- Floating hero particles ---------- */
+const particleHost = document.getElementById('particles');
+for (let i = 0; i < 16; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const size = Math.random() * 4 + 2;
+  p.style.width = size + 'px';
+  p.style.height = size + 'px';
+  p.style.left = Math.random() * 100 + '%';
+  p.style.top = Math.random() * 100 + '%';
+  p.style.animationDelay = (Math.random() * 6) + 's';
+  p.style.animationDuration = (7 + Math.random() * 6) + 's';
+  particleHost.appendChild(p);
+}
+
+/* ---------- FAQ accordion ---------- */
+document.querySelectorAll('.faq-item').forEach(item => {
+  const q = item.querySelector('.faq-q');
+  const a = item.querySelector('.faq-a');
+  q.addEventListener('click', () => {
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(other => {
+      other.classList.remove('open');
+      other.querySelector('.faq-a').style.maxHeight = null;
+    });
+    if (!isOpen) {
+      item.classList.add('open');
+      a.style.maxHeight = a.scrollHeight + 'px';
+    }
+  });
+});
+
+/* ---------- Contact form via EmailJS ---------- */
+// 🔧 EDIT: replace these 3 values with the ones from your emailjs.com dashboard
+const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';
+const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';
+const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+
+if (window.emailjs) emailjs.init(EMAILJS_PUBLIC_KEY);
+
+document.getElementById('contactForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const statusEl = document.getElementById('formStatus');
+  statusEl.textContent = 'Sending...';
+  statusEl.style.color = 'var(--muted)';
+
+  emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, this)
+    .then(() => {
+      statusEl.textContent = 'Message sent. Thank you!';
+      statusEl.style.color = 'var(--gold)';
+      this.reset();
+    })
+    .catch(() => {
+      statusEl.textContent = 'Something went wrong — please email us directly instead.';
+      statusEl.style.color = 'var(--red)';
+    });
+});
+</script>
+</body>
+  </html>
