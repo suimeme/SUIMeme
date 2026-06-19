@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>$SUIIMeme — Solana's Most Aggressive Meme</title>
+  <meta name="description" content="$SUIIMeme — Cristiano Ronaldo's iconic SUIII celebration, now dominating Solana. 0% Tax. 100% Fair Launch. 1 Billion Supply." />
+  <link rel="icon" type="image/png" href="logo.png" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold:    #FFD700;
+      --gold2:   #FFA500;
+      --red:     #E8002D;
+      --red2:    #FF1744;
+      --bg:      #050508;
+      --bg2:     #0A0A10;
+      --bg3:     #0F0F18;
+      --card:    #111120;
+      --border:  rgba(255,215,0,0.15);
+      --text:    #F0F0F5;
+      --muted:   #8888AA;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body:    'Space Grotesk', sans-serif;
+      --font-ui:      'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+
+    /* ===== SCROLL ANIMATIONS ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.8s cubic-bezier(.22,1,.36,1), transform 0.8s cubic-bezier(.22,1,.36,1);
+    }
+    .reveal.left  { transform: translateX(-60px); }
+    .reveal.right { transform: translateX(60px); }
+    .reveal.scale { transform: scale(0.85); }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ===== PARTICLES CANVAS ===== */
+    #particles-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 0 2rem;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(5,5,8,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+
+    .navbar.scrolled {
+      height: 60px;
+      background: rgba(5,5,8,0.97);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--gold);
+    }
+
+    .nav-logo span {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-ui);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    .nav-cta {
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: #000 !important;
+      padding: 0.5rem 1.2rem;
+      border-radius: 50px;
+      font-weight: 700 !important;
+      transition: transform 0.2s, box-shadow 0.2s !important;
+    }
+
+    .nav-cta:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255,215,0,0.5);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--gold);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 70px; left: 0; right: 0;
+      background: rgba(5,5,8,0.98);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      z-index: 999;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: var(--font-ui);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.3s;
+    }
+    .mobile-menu a:hover { color: var(--gold); }
+    .mobile-menu .mob-cta {
+      color: #000 !important;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      text-align: center;
+      border-radius: 50px;
+      padding: 0.8rem;
+      border: none;
+    }
+
+    /* ===== SECTIONS BASE ===== */
+    section {
+      position: relative;
+      z-index: 1;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .section-label {
+      font-family: var(--font-ui);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      line-height: 1;
+      letter-spacing: 2px;
+    }
+
+    /* ===== HERO SECTION ===== */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 1.5rem 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(255,215,0,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    #hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 200px;
+      background: linear-gradient(to bottom, transparent, var(--bg));
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(232,0,45,0.15);
+      border: 1px solid rgba(232,0,45,0.4);
+      border-radius: 50px;
+      padding: 0.4rem 1rem;
+      font-family: var(--font-ui);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--red2);
+      margin-bottom: 2rem;
+      animation: fadeDown 0.8s ease both;
+    }
+
+    .hero-badge .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--red2);
+      animation: pulse-dot 1.5s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.5); }
+    }
+
+    .hero-logo-wrap {
+      position: relative;
+      margin-bottom: 2rem;
+      animation: fadeUp 1s ease 0.2s both;
+    }
+
+    .hero-logo-glow {
+      position: absolute;
+      inset: -30px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,215,0,0.25), transparent 70%);
+      animation: glow-pulse 3s ease-in-out infinite;
+    }
+
+    .hero-logo {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--gold);
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 0 40px rgba(255,215,0,0.3), 0 0 80px rgba(255,215,0,0.1);
+      animation: logo-float 4s ease-in-out infinite;
+    }
+
+    @keyframes logo-float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+
+    @keyframes glow-pulse {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.05); }
+    }
+
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(4rem, 15vw, 10rem);
+      line-height: 0.9;
+      letter-spacing: 4px;
+      background: linear-gradient(135deg, #fff 0%, var(--gold) 50%, var(--gold2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fadeUp 1s ease 0.3s both;
+      text-shadow: none;
+    }
+
+    .hero-sub {
+      font-family: var(--font-display);
+      font-size: clamp(1rem, 3vw, 1.8rem);
+      letter-spacing: 6px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-top: 0.5rem;
+      animation: fadeUp 1s ease 0.4s both;
+    }
+
+    .hero-sub span {
+      color: var(--gold);
+    }
+
+    .hero-desc {
+      max-width: 560px;
+      margin: 1.5rem auto 0;
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.7;
+      animation: fadeUp 1s ease 0.5s both;
+    }
+
+    .hero-ticker {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      letter-spacing: 4px;
+      color: var(--gold);
+      background: rgba(255,215,0,0.08);
+      border: 1px solid rgba(255,215,0,0.3);
+      border-radius: 8px;
+      padding: 0.3rem 1rem;
+      margin-top: 1rem;
+      animation: fadeUp 1s ease 0.55s both;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+      animation: fadeUp 1s ease 0.6s both;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: #000;
+      font-family: var(--font-ui);
+      font-weight: 800;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 0.9rem 2rem;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.3), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .btn-primary:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(255,215,0,0.6); }
+    .btn-primary:hover::before { opacity: 1; }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: var(--gold);
+      font-family: var(--font-ui);
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 0.9rem 2rem;
+      border-radius: 50px;
+      border: 2px solid var(--gold);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-outline:hover {
+      background: rgba(255,215,0,0.1);
+      box-shadow: 0 0 20px rgba(255,215,0,0.2);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 3rem;
+      padding: 1.2rem 2rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      animation: fadeUp 1s ease 0.7s both;
+    }
+
+    .hero-stat {
+      text-align: center;
+    }
+
+    .hero-stat-value {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      color: var(--gold);
+      letter-spacing: 2px;
+    }
+
+    .hero-stat-label {
+      font-family: var(--font-ui);
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .hero-divider { width: 1px; background: var(--border); align-self: stretch; }
+
+    .scroll-hint {
+      margin-top: 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      animation: fadeUp 1s ease 0.9s both;
+    }
+
+    .scroll-hint span {
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .scroll-arrow {
+      width: 28px;
+      height: 28px;
+      border-right: 2px solid var(--gold);
+      border-bottom: 2px solid var(--gold);
+      transform: rotate(45deg);
+      animation: scroll-bounce 1.5s infinite;
+      opacity: 0.6;
+    }
+
+    @keyframes scroll-bounce {
+      0%, 100% { transform: rotate(45deg) translateY(0); }
+      50% { transform: rotate(45deg) translateY(6px); }
+    }
+
+    /* ===== MARQUEE ===== */
+    .marquee-section {
+      padding: 1.2rem 0;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      overflow: hidden;
+      position: relative;
+      z-index: 2;
+    }
+
+    .marquee-track {
+      display: flex;
+      gap: 0;
+      white-space: nowrap;
+      animation: marquee 20s linear infinite;
+    }
+
+    .marquee-item {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      letter-spacing: 3px;
+      color: #000;
+      padding: 0 2rem;
+      flex-shrink: 0;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ===== ABOUT SECTION ===== */
+    #about {
+      padding: 100px 0;
+      background: var(--bg2);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .about-image {
+      position: relative;
+    }
+
+    .about-img-frame {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+    }
+
+    .about-img-frame::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 26px;
+      background: linear-gradient(135deg, var(--gold), transparent, var(--red));
+      z-index: -1;
+    }
+
+    .about-img-frame img {
+      width: 100%;
+      border-radius: 22px;
+      border: 1px solid var(--border);
+    }
+
+    .about-glow-tag {
+      position: absolute;
+      bottom: -1.5rem;
+      right: -1.5rem;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: #000;
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      letter-spacing: 2px;
+      padding: 0.8rem 1.5rem;
+      border-radius: 50px;
+      white-space: nowrap;
+    }
+
+    .about-content .section-title {
+      margin-bottom: 1.5rem;
+    }
+
+    .about-content .section-title span {
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .about-text {
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 1.2rem;
+    }
+
+    .about-callout {
+      margin-top: 2rem;
+      padding: 1.2rem 1.5rem;
+      background: rgba(232,0,45,0.08);
+      border: 1px solid rgba(232,0,45,0.25);
+      border-left: 4px solid var(--red2);
+      border-radius: 12px;
+    }
+
+    .about-callout p {
+      font-family: var(--font-ui);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .about-callout p span { color: var(--gold); }
+
+    .about-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1.5rem;
+    }
+
+    .about-tag {
+      font-family: var(--font-ui);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 0.35rem 0.9rem;
+      border-radius: 50px;
+      background: rgba(255,215,0,0.08);
+      border: 1px solid rgba(255,215,0,0.25);
+      color: var(--gold);
+    }
+
+    /* ===== TOKENOMICS SECTION ===== */
+    #tokenomics {
+      padding: 100px 0;
+      background: var(--bg3);
+    }
+
+    .tokenomics-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .tokenomics-header .section-title {
+      margin-bottom: 1rem;
+    }
+
+    .tokenomics-header .section-title span {
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .tokenomics-header p {
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .tokenomics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .tcard {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    }
+
+    .tcard::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .tcard:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      border-color: rgba(255,215,0,0.4);
+    }
+
+    .tcard:hover::before { opacity: 1; }
+
+    .tcard-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .tcard-value {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.1;
+    }
+
+    .tcard-label {
+      font-family: var(--font-ui);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.5rem;
+    }
+
+    .tcard-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 0.8rem;
+      line-height: 1.6;
+    }
+
+    .tokenomics-highlight {
+      background: rgba(255,215,0,0.05);
+      border: 1px solid rgba(255,215,0,0.2);
+      border-radius: 16px;
+      padding: 1.5rem 2rem;
+      text-align: center;
+    }
+
+    .tokenomics-highlight p {
+      font-family: var(--font-ui);
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .tokenomics-highlight p span { color: var(--gold); }
+
+    /* ===== HOW TO BUY ===== */
+    #howtobuy {
+      padding: 100px 0;
+      background: var(--bg2);
+    }
+
+    .htb-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .htb-header .section-title span {
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .htb-header p {
+      color: var(--muted);
+      margin-top: 0.5rem;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+
+    .step-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      position: relative;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    }
+
+    .step-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      border-color: rgba(255,215,0,0.3);
+    }
+
+    .step-number {
+      font-family: var(--font-display);
+      font-size: 4rem;
+      line-height: 1;
+      color: rgba(255,215,0,0.1);
+      position: absolute;
+      top: 1rem;
+      right: 1.2rem;
+      letter-spacing: 0;
+      pointer-events: none;
+      transition: color 0.3s;
+    }
+
+    .step-card:hover .step-number { color: rgba(255,215,0,0.2); }
+
+    .step-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .step-title {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      letter-spacing: 1px;
+      color: #fff;
+      margin-bottom: 0.8rem;
+    }
+
+    .step-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .htb-cta {
+      text-align: center;
+      margin-top: 3rem;
+    }
+
+    /* ===== COMMUNITY SECTION ===== */
+    #community {
+      padding: 100px 0;
+      background: var(--bg3);
+      text-align: center;
+    }
+
+    .community-inner {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .community-inner .section-title {
+      margin-bottom: 1rem;
+    }
+
+    .community-inner .section-title span {
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .community-inner p {
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+    }
+
+    .social-buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .social-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: var(--font-ui);
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      padding: 0.9rem 1.8rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .social-btn.twitter:hover {
+      background: rgba(29,161,242,0.1);
+      border-color: rgba(29,161,242,0.5);
+      color: #1DA1F2;
+    }
+
+    .social-btn.telegram:hover {
+      background: rgba(0,136,204,0.1);
+      border-color: rgba(0,136,204,0.5);
+      color: #0088CC;
+    }
+
+    .social-btn.pump:hover {
+      background: rgba(255,215,0,0.1);
+      border-color: rgba(255,215,0,0.5);
+      color: var(--gold);
+    }
+
+    .social-btn svg { width: 20px; height: 20px; }
+
+    /* ===== CONTACT SECTION ===== */
+    #contact {
+      padding: 100px 0;
+      background: var(--bg2);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .contact-info .section-title {
+      margin-bottom: 1rem;
+    }
+
+    .contact-info .section-title span {
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .contact-info p {
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .contact-item-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(255,215,0,0.08);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .contact-item-text {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .contact-item-text strong {
+      display: block;
+      color: var(--text);
+      font-family: var(--font-ui);
+      font-weight: 700;
+      margin-bottom: 0.1rem;
+    }
+
+    .contact-form {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 2.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-family: var(--font-ui);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      padding: 0.9rem 1.2rem;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      -webkit-appearance: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: rgba(255,215,0,0.4);
+      box-shadow: 0 0 0 3px rgba(255,215,0,0.05);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 140px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-submit {
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+
+    .form-message {
+      display: none;
+      margin-top: 1rem;
+      padding: 1rem 1.2rem;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .form-message.success {
+      background: rgba(0,200,100,0.1);
+      border: 1px solid rgba(0,200,100,0.3);
+      color: #00C864;
+    }
+
+    .form-message.error {
+      background: rgba(232,0,45,0.1);
+      border: 1px solid rgba(232,0,45,0.3);
+      color: var(--red2);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 3rem 0 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-brand img {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+    }
+
+    .footer-brand-name {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .footer-brand-tagline {
+      font-size: 0.8rem;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .footer-links a {
+      font-family: var(--font-ui);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover { color: var(--gold); }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-copy {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .footer-solana {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-ui);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--muted);
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 0.4rem 1rem;
+    }
+
+    .footer-solana::before {
+      content: '◎';
+      color: #9945FF;
+      font-size: 1rem;
+    }
+
+    .footer-disclaimer {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 0.75rem;
+      color: rgba(136,136,170,0.6);
+      line-height: 1.6;
+    }
+
+    /* ===== KEYFRAMES ===== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .tokenomics-grid { grid-template-columns: repeat(3, 1fr); }
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .about-image { max-width: 400px; margin: 0 auto; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      .hero-stats { gap: 1rem; padding: 1rem; }
+      .hero-divider { display: none; }
+
+      .tokenomics-grid { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: 1fr 1fr; }
+      .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-inner { grid-template-columns: 1fr; }
+      .footer-links { flex-wrap: wrap; gap: 1rem; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .form-row { grid-template-columns: 1fr; }
+      .about-glow-tag { bottom: -1rem; right: 0; }
+    }
+
+    @media (max-width: 480px) {
+      .steps-grid { grid-template-columns: 1fr; }
+      .hero-ctas { flex-direction: column; align-items: center; }
+      .social-buttons { flex-direction: column; align-items: center; }
+    }
+
+    /* ===== LOADING SCREEN ===== */
+    #loader {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      transition: opacity 0.6s, visibility 0.6s;
+    }
+
+    #loader.hidden { opacity: 0; visibility: hidden; }
+
+    .loader-logo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      border-top-color: var(--gold);
+      animation: spin 0.8s linear infinite;
+    }
+
+    .loader-text {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      letter-spacing: 6px;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { transition: none; }
+      .hero-logo { animation: none; }
+      .marquee-track { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOADER -->
+  <div id="loader">
+    <div class="loader-logo"></div>
+    <div class="loader-text">$SUIIMEME</div>
+  </div>
+
+  <!-- PARTICLES -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <a href="#hero" class="nav-logo">
+      <img src="logo.png" alt="SUIIMeme Logo" onerror="this.style.display='none'"/>
+      <span>$SUIIMeme</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#tokenomics">Tokenomics</a></li>
+      <li><a href="#howtobuy">How to Buy</a></li>
+      <li><a href="#community">Community</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="YOUR_PUMP_FUN_LINK_HERE" target="_blank" class="nav-cta">Buy $SIUU 🔥</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#about" onclick="closeMenu()">About</a>
+    <a href="#tokenomics" onclick="closeMenu()">Tokenomics</a>
+    <a href="#howtobuy" onclick="closeMenu()">How to Buy</a>
+    <a href="#community" onclick="closeMenu()">Community</a>
+    <a href="#contact" onclick="closeMenu()">Contact</a>
+    <a href="YOUR_PUMP_FUN_LINK_HERE" target="_blank" class="mob-cta">Buy $SIUU 🔥</a>
+  </div>
+
+  <!-- ===== HERO ===== -->
+  <section id="hero">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Now Live on Pump.fun
+    </div>
+
+    <div class="hero-logo-wrap">
+      <div class="hero-logo-glow"></div>
+      <img src="logo.png" alt="SUIIMeme" class="hero-logo" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%22160%22 viewBox=%220 0 160 160%22><circle cx=%2280%22 cy=%2280%22 r=%2280%22 fill=%22%23111120%22/><text x=%2280%22 y=%2295%22 text-anchor=%22middle%22 font-size=%2240%22 fill=%22%23FFD700%22>⚽</text></svg>'" />
+    </div>
+
+    <h1 class="hero-headline">SUIII</h1>
+    <p class="hero-sub">Solana's <span>Most Aggressive</span> Meme</p>
+    <div class="hero-ticker">$SUIIMEME</div>
+    <p class="hero-desc">
+      Cristiano Ronaldo's legendary SUIII celebration just landed on Solana.
+      No tax. No presale. No BS. Just pure community energy taking over the blockchain.
+    </p>
+
+    <div class="hero-ctas">
+      <a href="YOUR_PUMP_FUN_LINK_HERE" target="_blank" class="btn-primary">
+        🚀 Buy on Pump.fun
+      </a>
+      <a href="YOUR_CHART_LINK_HERE" target="_blank" class="btn-outline">
+        📊 View Chart
+      </a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-value">1,000,000,000</div>
+        <div class="hero-stat-label">Total Supply</div>
+      </div>
+      <div class="hero-divider"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-value">0% / 0%</div>
+        <div class="hero-stat-label">Buy / Sell Tax</div>
+      </div>
+      <div class="hero-divider"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-value">100% FAIR</div>
+        <div class="hero-stat-label">Launch Type</div>
+      </div>
+      <div class="hero-divider"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-value">Solana</div>
+        <div class="hero-stat-label">Blockchain</div>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- ===== MARQUEE ===== -->
+  <div class="marquee-section">
+    <div class="marquee-track">
+      <!-- Doubled for infinite scroll effect -->
+      <span class="marquee-item">$SUIIMEME 🔥</span>
+      <span class="marquee-item">0% TAX ✅</span>
+      <span class="marquee-item">FAIR LAUNCH 🚀</span>
+      <span class="marquee-item">SOLANA ◎</span>
+      <span class="marquee-item">NO PRESALE 💎</span>
+      <span class="marquee-item">COMMUNITY FIRST 👑</span>
+      <span class="marquee-item">SUIII! 🏆</span>
+      <span class="marquee-item">$SUIIMEME 🔥</span>
+      <span class="marquee-item">0% TAX ✅</span>
+      <span class="marquee-item">FAIR LAUNCH 🚀</span>
+      <span class="marquee-item">SOLANA ◎</span>
+      <span class="marquee-item">NO PRESALE 💎</span>
+      <span class="marquee-item">COMMUNITY FIRST 👑</span>
+      <span class="marquee-item">SUIII! 🏆</span>
+    </div>
+  </div>
+
+  <!-- ===== ABOUT ===== -->
+  <section id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-image reveal left">
+          <div class="about-img-frame">
+            <img src="logo.png" alt="SUIIMeme" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22480%22 height=%22480%22 viewBox=%220 0 480 480%22><rect width=%22480%22 height=%22480%22 rx=%2222%22 fill=%22%23111120%22/><text x=%22240%22 y=%22260%22 text-anchor=%22middle%22 font-size=%22140%22>⚽</text></svg>'" />
+          </div>
+          <div class="about-glow-tag">🏆 SUIII ARMY</div>
+        </div>
+
+        <div class="about-content">
+          <p class="section-label reveal">Who We Are</p>
+          <h2 class="section-title reveal reveal-delay-1">
+            THE LEGEND<br/>
+            <span>TAKES SOLANA</span>
+          </h2>
+          <p class="about-text reveal reveal-delay-2">
+            When Cristiano Ronaldo scores, the world stops. Arms wide, head back, that iconic jump — and then: <strong style="color:#fff">SUIII!</strong> It's not just a celebration. It's a declaration of absolute dominance. And now, that energy lives on Solana.
+          </p>
+          <p class="about-text reveal reveal-delay-2">
+            $SUIIMeme isn't just another meme coin — it's a movement. Built by the community, for the community. No venture capital, no insider allocations, no shady pre-sales. Just raw, unfiltered meme energy from day one.
+          </p>
+          <p class="about-text reveal reveal-delay-3">
+            Our mission is simple: build the most passionate, loyal, and aggressive meme community on Solana. Every SUIII moment has the same energy — unstoppable, legendary, and heard around the world. That's what we're bringing to the blockchain.
+          </p>
+
+          <div class="about-callout reveal reveal-delay-3">
+            <p>🔥 <span>Fair Launch. No Dev Wallet. No Pre-sale. No Hidden Taxes.</span><br/>Pure community. Pure power. Pure SUIII.</p>
+          </div>
+
+          <div class="about-tags reveal reveal-delay-4">
+            <span class="about-tag">Community Driven</span>
+            <span class="about-tag">100% Fair</span>
+            <span class="about-tag">Zero Tax</span>
+            <span class="about-tag">Solana Native</span>
+            <span class="about-tag">Meme Royalty</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TOKENOMICS ===== -->
+  <section id="tokenomics">
+    <div class="container">
+      <div class="tokenomics-header">
+        <p class="section-label reveal">By The Numbers</p>
+        <h2 class="section-title reveal reveal-delay-1">SIMPLE.<br/><span>POWERFUL.</span></h2>
+        <p class="reveal reveal-delay-2">No complicated mechanics. Just a clean, community-owned token.</p>
+      </div>
+
+      <div class="tokenomics-grid">
+        <div class="tcard reveal reveal-delay-1">
+          <div class="tcard-icon">🪙</div>
+          <div class="tcard-value">1,000,000,000</div>
+          <div class="tcard-label">Total Supply</div>
+          <p class="tcard-desc">One billion tokens. Every single one available to the community from the very first second.</p>
+        </div>
+
+        <div class="tcard reveal reveal-delay-2">
+          <div class="tcard-icon">💸</div>
+          <div class="tcard-value">0% / 0%</div>
+          <div class="tcard-label">Buy / Sell Tax</div>
+          <p class="tcard-desc">Zero tax on buy. Zero tax on sell. What you see is exactly what you get. Always.</p>
+        </div>
+
+        <div class="tcard reveal reveal-delay-3">
+          <div class="tcard-icon">🚀</div>
+          <div class="tcard-value">100%</div>
+          <div class="tcard-label">Fair Launch</div>
+          <p class="tcard-desc">Launched on Pump.fun with 100% of liquidity publicly available. No dev bags, no VC dumps.</p>
+        </div>
+      </div>
+
+      <div class="tokenomics-highlight reveal reveal-delay-4">
+        <p>⚡ <span>No pre-sale.</span> No team allocation. No VC involvement. No insider wallets. No unlock schedules.<br/>Just <span>100% pure community power</span> — the way it was meant to be.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HOW TO BUY ===== -->
+  <section id="howtobuy">
+    <div class="container">
+      <div class="htb-header">
+        <p class="section-label reveal">Get Started</p>
+        <h2 class="section-title reveal reveal-delay-1">HOW TO BUY<br/><span style="background:linear-gradient(135deg,#FFD700,#FFA500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">$SUIIMEME</span></h2>
+        <p class="reveal reveal-delay-2">4 simple steps. Under 5 minutes. Join the SUIII Army today.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card reveal reveal-delay-1">
+          <div class="step-number">01</div>
+          <div class="step-icon">📱</div>
+          <div class="step-title">Get Phantom</div>
+          <p class="step-desc">Download the Phantom Wallet from <strong style="color:#fff">phantom.app</strong> on your browser or mobile device. It's the leading Solana wallet — fast, secure, and free.</p>
+        </div>
+
+        <div class="step-card reveal reveal-delay-2">
+          <div class="step-number">02</div>
+          <div class="step-icon">💰</div>
+          <div class="step-title">Fund with SOL</div>
+          <p class="step-desc">Buy SOL from any exchange (Coinbase, Binance, Bybit) and send it to your Phantom wallet address. SOL is your fuel to swap for $SUIIMeme.</p>
+        </div>
+
+        <div class="step-card reveal reveal-delay-3">
+          <div class="step-number">03</div>
+          <div class="step-icon">🌐</div>
+          <div class="step-title">Visit Pump.fun</div>
+          <p class="step-desc">Go to <strong style="color:#fff">pump.fun</strong> and search for <strong style="color:#FFD700">$SUIIMeme</strong>. Connect your Phantom wallet with one click. Safe, decentralized, and instant.</p>
+        </div>
+
+        <div class="step-card reveal reveal-delay-4">
+          <div class="step-number">04</div>
+          <div class="step-icon">🔄</div>
+          <div class="step-title">Swap & SUIII!</div>
+          <p class="step-desc">Enter the amount of SOL you want to swap. Hit the swap button. Welcome to the SUIII Army — you just made the move of a champion. 🏆</p>
+        </div>
+      </div>
+
+      <div class="htb-cta reveal">
+        <a href="YOUR_PUMP_FUN_LINK_HERE" target="_blank" class="btn-primary" style="font-size:1rem;padding:1rem 2.5rem;">
+          🚀 Buy $SUIIMeme Now
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COMMUNITY ===== -->
+  <section id="community">
+    <div class="container">
+      <div class="community-inner">
+        <p class="section-label reveal">Stay Connected</p>
+        <h2 class="section-title reveal reveal-delay-1">
+          JOIN THE<br/><span style="background:linear-gradient(135deg,#FFD700,#FFA500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">SUIII ARMY</span>
+        </h2>
+        <p class="reveal reveal-delay-2">
+          The strongest meme communities don't just hold — they build, they hype, they conquer.
+          Follow us across every platform and be the first to know everything.
+        </p>
+
+        <div class="social-buttons reveal reveal-delay-3">
+          <a href="YOUR_TWITTER_LINK_HERE" target="_blank" class="social-btn twitter">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            Twitter / X
+          </a>
+          <a href="YOUR_TELEGRAM_LINK_HERE" target="_blank" class="social-btn telegram">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+            Telegram
+          </a>
+          <a href="YOUR_PUMP_FUN_LINK_HERE" target="_blank" class="social-btn pump">
+            <span style="font-size:1.2rem">⚡</span>
+            Buy on Pump.fun
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section id="contact">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info">
+          <p class="section-label reveal">Get In Touch</p>
+          <h2 class="section-title reveal reveal-delay-1">
+            REACH<br/><span style="background:linear-gradient(135deg,#FFD700,#FFA500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">OUT TO US</span>
+          </h2>
+          <p class="reveal reveal-delay-2">
+            Got suggestions, partnership ideas, or just want to spread the SUIII energy? We read every message. Drop us a note and we'll get back to you.
+          </p>
+
+          <div class="contact-item reveal reveal-delay-3">
+            <div class="contact-item-icon">📧</div>
+            <div class="contact-item-text">
+              <strong>Email</strong>
+              contactme2756123@gmail.com
+            </div>
+          </div>
+
+          <div class="contact-item reveal reveal-delay-3">
+            <div class="contact-item-icon">⚡</div>
+            <div class="contact-item-text">
+              <strong>Response Time</strong>
+              Usually within 24 hours
+            </div>
+          </div>
+
+          <div class="contact-item reveal reveal-delay-4">
+            <div class="contact-item-icon">🌍</div>
+            <div class="contact-item-text">
+              <strong>Community</strong>
+              Available on X & Telegram
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-form reveal right">
+          <form id="contactForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Your Name</label>
+                <input type="text" id="from_name" placeholder="CR7 Fan" required />
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="reply_to" placeholder="you@example.com" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Subject</label>
+              <input type="text" id="subject" placeholder="Partnership / Suggestion / Question" required />
+            </div>
+
+            <div class="form-group">
+              <label>Message</label>
+              <textarea id="message" placeholder="Share your ideas, suggestions, or just say SUIII! We love hearing from the community..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary form-submit" id="submitBtn">
+              🚀 Send Message
+            </button>
+
+            <div class="form-message" id="formMessage"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <img src="logo.png" alt="SUIIMeme" onerror="this.style.display='none'" />
+          <div>
+            <div class="footer-brand-name">$SUIIMeme</div>
+            <div class="footer-brand-tagline">Solana's Most Aggressive Meme</div>
+          </div>
+        </div>
+        <div class="footer-links">
+          <a href="#about">About</a>
+          <a href="#tokenomics">Tokenomics</a>
+          <a href="#howtobuy">How to Buy</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2025 $SUIIMeme. All rights reserved.</p>
+        <span class="footer-solana">Built on Solana</span>
+      </div>
+
+      <div class="footer-disclaimer">
+        $SUIIMeme is a meme cryptocurrency for entertainment purposes only. Cryptocurrency investments carry significant risk. This is not financial advice. Always do your own research (DYOR) before investing. Past performance does not guarantee future results.
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script>
+    // ===== LOADER =====
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('loader').classList.add('hidden');
+      }, 1200);
+    });
+
+    // ===== PARTICLES =====
+    (function() {
+      const canvas = document.getElementById('particles-canvas');
+      const ctx = canvas.getContext('2d');
+      let W, H, particles = [];
+
+      function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      function rand(min, max) { return Math.random() * (max - min) + min; }
+
+      class Particle {
+        constructor() { this.reset(); }
+        reset() {
+          this.x = rand(0, W);
+          this.y = rand(0, H);
+          this.r = rand(0.5, 2);
+          this.vx = rand(-0.3, 0.3);
+          this.vy = rand(-0.5, -0.1);
+          this.alpha = rand(0.1, 0.6);
+          const colors = ['255,215,0', '255,165,0', '232,0,45', '255,255,255'];
+          this.color = colors[Math.floor(Math.random() * colors.length)];
+        }
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+          this.alpha -= 0.001;
+          if (this.y < -5 || this.alpha <= 0) this.reset();
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${this.color},${this.alpha})`;
+          ctx.fill();
+        }
+      }
+
+      for (let i = 0; i < 120; i++) particles.push(new Particle());
+
+      function animate() {
+        ctx.clearRect(0, 0, W, H);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+
+    // ===== SCROLL ANIMATIONS =====
+    function initReveal() {
+      const els = document.querySelectorAll('.reveal');
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+      els.forEach(el => obs.observe(el));
+    }
+    initReveal();
+
+    // ===== NAVBAR SCROLL =====
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // ===== HAMBURGER =====
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+
+    function closeMenu() {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }
+
+    // ===== SMOOTH SCROLL NAV =====
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          closeMenu();
+          const top = target.getBoundingClientRect().top + window.scrollY - 70;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
+    });
+
+    // ===== EMAILJS CONTACT FORM =====
+    emailjs.init('YOUR_EMAILJS_PUBLIC_KEY');  // Replace with your EmailJS public key
+
+    document.getElementById('contactForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const btn = document.getElementById('submitBtn');
+      const msg = document.getElementById('formMessage');
+      btn.textContent = '⏳ Sending...';
+      btn.disabled = true;
+      msg.style.display = 'none';
+
+      const templateParams = {
+        from_name:  document.getElementById('from_name').value,
+        reply_to:   document.getElementById('reply_to').value,
+        subject:    document.getElementById('subject').value,
+        message:    document.getElementById('message').value,
+        to_email:   'contactme2756123@gmail.com'
+      };
+
+      try {
+        await emailjs.send(
+          'YOUR_EMAILJS_SERVICE_ID',    // Replace with your EmailJS service ID
+          'YOUR_EMAILJS_TEMPLATE_ID',   // Replace with your EmailJS template ID
+          templateParams
+        );
+        msg.textContent = '✅ Message sent! We\'ll get back to you within 24 hours. SUIII! 🏆';
+        msg.className = 'form-message success';
+        msg.style.display = 'block';
+        this.reset();
+      } catch (err) {
+        msg.textContent = '❌ Something went wrong. Please try emailing us directly at contactme2756123@gmail.com';
+        msg.className = 'form-message error';
+        msg.style.display = 'block';
+      }
+
+      btn.textContent = '🚀 Send Message';
+      btn.disabled = false;
+    });
+
+    // ===== CARD TILT EFFECT =====
+    document.querySelectorAll('.tcard, .step-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.transform = `translateY(-6px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    });
+  </script>
+</body>
+</html>
