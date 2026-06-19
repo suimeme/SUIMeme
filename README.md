@@ -1,6 +1,6 @@
-# ⚽ Suiii Meme ($SUI) - Official Website
+# ⚽ Suiii Meme ($SUIIIMeme) - Official Website
 
-Welcome to the official repository for **Suiii Meme ($SUI)**, the most aggressive and high-energy meme coin on the Solana blockchain. 🚀
+Welcome to the official repository for **Suiii Meme ($SUIIIMeme)**, the most aggressive and high-energy meme coin on the Solana blockchain. 🚀
 
 This repository contains the complete frontend codebase for the official landing page, designed to handle high traffic and deliver a premium user experience.
 
@@ -8,7 +8,7 @@ This repository contains the complete frontend codebase for the official landing
 
 ## 🚀 Live Demo & Launch
 * **Platform:** [Pump.fun](https://pump.fun)
-* **Ticker:** `$SUI` (or `$SIUU`)
+* **Ticker:** `$SUIIIMeme` 
 
 ---
 
