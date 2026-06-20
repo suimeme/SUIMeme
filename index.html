@@ -1750,7 +1750,7 @@
     });
 
     // ===== EMAILJS CONTACT FORM =====
-    emailjs.init('YOUR_EMAILJS_PUBLIC_KEY');  // Replace with your EmailJS public key
+    emailjs.init(q-OoqYCkZb3N-vkTK);  // Replace with your EmailJS public key
 
     document.getElementById('contactForm').addEventListener('submit', async function(e) {
       e.preventDefault();
@@ -1771,8 +1771,8 @@
 
       try {
         await emailjs.send(
-          'YOUR_EMAILJS_SERVICE_ID',    // Replace with your EmailJS service ID
-          'YOUR_EMAILJS_TEMPLATE_ID',   // Replace with your EmailJS template ID
+          service_pyhdabp,    // Replace with your EmailJS service ID
+          template_901fd87,   // Replace with your EmailJS template ID
           templateParams
         );
         msg.textContent = '✅ Message sent! We\'ll get back to you within 24 hours. SUIII! 🏆';
